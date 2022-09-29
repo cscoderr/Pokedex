@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/home/home.dart';
 
 class HomePage extends ConsumerWidget {
@@ -8,14 +7,9 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeProvider);
-    final images = [
-      'assets/images/001.png',
-      'assets/images/003.png',
-      'assets/images/006.png'
-    ];
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Column(
@@ -75,31 +69,8 @@ class HomePage extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              Expanded(
-                child: homeState.when(
-                  data: (data) => GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 0.6,
-                    ),
-                    itemCount: data.results?.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final pokemon = data.results![index];
-                      return HomeCard(
-                        id: pokemon.id,
-                        imageUrl: pokemon.getImageUrl,
-                        name: pokemon.name!,
-                      );
-                    },
-                  ),
-                  error: (error, __) => Text(error.toString()),
-                  loading: () => const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  ),
-                ),
+              const Expanded(
+                child: HomeCardGridView(),
               ),
             ],
           ),
