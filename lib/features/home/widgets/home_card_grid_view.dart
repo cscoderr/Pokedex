@@ -28,6 +28,7 @@ class _HomeCardGridViewState extends ConsumerState<HomeCardGridView> {
     return pokemonList.when(
       data: (data) => GridView.builder(
         controller: _scrollController,
+        key: ValueKey('__list_${data.results}__'),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
