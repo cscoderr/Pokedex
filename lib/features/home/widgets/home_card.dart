@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/home/home.dart';
 
 class HomeCard extends ConsumerWidget {
@@ -95,7 +96,7 @@ class HomeCardView extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  name,
+                  name.capitalize,
                   style: Theme.of(context).textTheme.headline6!.copyWith(
                         fontWeight: FontWeight.w600,
                         color: colorDistance < 0.2

@@ -29,7 +29,10 @@ class _LandingPageState extends State<LandingPage> {
       body: FadeAmination(
         delay: 200,
         child: Center(
-          child: Image.asset('assets/images/pokedex.png'),
+          child: Hero(
+            tag: const ValueKey('__pokedex__'),
+            child: Image.asset('assets/images/pokedex.png'),
+          ),
         ),
       ),
     );

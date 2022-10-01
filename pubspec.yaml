@@ -20,6 +20,7 @@ dependencies:
   google_fonts: ^3.0.1
   intl: ^0.17.0
   palette_generator: ^0.3.3+2
+  percent_indicator: ^4.2.2
   shimmer: ^2.0.0
 
 dev_dependencies:

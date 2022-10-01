@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:pokedex/core/core.dart';
 
 abstract class PokedexApi {
-  Future<PokemonResponse> getPokemonList();
+  Future<PokemonResponse> getPokemonList({int? offset, int? limit});
   Future<PokemonDetails> getPokemonDetails(String pokemonName);
 }
 
@@ -30,9 +30,9 @@ class PokedexApiImpl implements PokedexApi {
   }
 
   @override
-  Future<PokemonResponse> getPokemonList() async {
+  Future<PokemonResponse> getPokemonList({int? offset, int? limit}) async {
     try {
-      final response = await _dio.get('/pokemon');
+      final response = await _dio.get('/pokemon?limit=$limit&offset=$offset');
       print(response.data);
       if (response.statusCode == HttpStatus.ok) {
         return PokemonResponse.fromJson(response.data as Map<String, dynamic>);

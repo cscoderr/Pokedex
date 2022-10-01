@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/details/details.dart';
 import 'package:pokedex/features/home/home.dart';
@@ -29,6 +30,9 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
         widget.pokemon.name!.toLowerCase(),
       ),
     );
+    final textStyle = Theme.of(context).textTheme;
+    final mainColor =
+        imageColor?.dominantColor?.color ?? const Color(0xFFB8DFCA);
     return Scaffold(
       body: CustomScrollView(
         controller: scrollController,
@@ -62,31 +66,114 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: details.when(
-              data: (data) => const Text('dd'),
-              error: (error, _) => Text(error.toString()),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
+          details.when(
+            data: (data) {
+              return SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Wrap(
+                        children: data.types
+                                ?.map(
+                                  (e) => Padding(
+                                    padding: const EdgeInsets.only(right: 20),
+                                    child: Chip(
+                                      backgroundColor: imageColor
+                                              ?.paletteColors.last.color ??
+                                          Colors.grey,
+                                      label: Text(
+                                        e.type!.name!.capitalize,
+                                        style: textStyle.headline6,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList() ??
+                            [],
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(),
+                    const SizedBox(height: 10),
+                    _percentageIndicator(
+                      percentage: data.height!,
+                      title: 'Height:',
+                      textStyle: textStyle,
+                      progressColor: mainColor,
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(),
+                    const SizedBox(height: 10),
+                    _percentageIndicator(
+                      percentage: data.height!,
+                      title: 'Weight:',
+                      textStyle: textStyle,
+                      progressColor: mainColor,
+                    ),
+                    const SizedBox(height: 15),
+                    const Divider(),
+                    const SizedBox(height: 10),
+                    _percentageIndicator(
+                      percentage: data.height!,
+                      title: 'Based Experience:',
+                      textStyle: textStyle,
+                      progressColor: mainColor,
+                    ),
+                  ],
+                ),
+              );
+            },
+            error: (error, _) => SliverToBoxAdapter(
+              child: Text(
+                error.toString(),
+              ),
+            ),
+            loading: () => const SliverToBoxAdapter(
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 100.0,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const SizedBox(
-                    width: 100.0,
-                    child: Card(
-                      child: Text('data'),
-                    ),
-                  );
-                },
+        ],
+      ),
+    );
+  }
+
+  Widget _percentageIndicator({
+    required int percentage,
+    required String title,
+    required TextTheme textStyle,
+    required Color progressColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              title,
+              style: textStyle.headline6!.copyWith(
+                fontWeight: FontWeight.w500,
               ),
             ),
+          ),
+          const SizedBox(height: 5),
+          LinearPercentIndicator(
+            width: MediaQuery.of(context).size.width - 40,
+            lineHeight: 25.0,
+            percent: percentage / 100,
+            center: Text(
+              '${percentage / 100}%',
+              style: textStyle.titleMedium!.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            barRadius: const Radius.circular(20),
+            backgroundColor: Colors.grey.withOpacity(0.8),
+            progressColor: progressColor,
           ),
         ],
       ),

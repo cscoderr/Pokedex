@@ -10,13 +10,14 @@ class HomeCardShimmer extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: GridView.builder(
+        padding: EdgeInsets.zero,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
           childAspectRatio: 0.6,
         ),
-        itemCount: 5,
+        shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
           return DecoratedBox(
             decoration: BoxDecoration(
@@ -25,6 +26,7 @@ class HomeCardShimmer extends StatelessWidget {
             ),
           );
         },
+        itemCount: 5,
       ),
     );
   }
