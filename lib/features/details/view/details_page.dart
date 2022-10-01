@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:palette_generator/palette_generator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/details/details.dart';
@@ -45,9 +43,9 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
               0,
-              10,
+              15,
               0,
-              MediaQuery.of(context).padding.bottom,
+              MediaQuery.of(context).padding.bottom - 20,
             ),
             sliver: SliverToBoxAdapter(
               child: Column(
@@ -68,59 +66,91 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
           ),
           details.when(
             data: (data) {
-              return SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Wrap(
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Wrap(
+                        alignment: WrapAlignment.spaceEvenly,
+                        spacing: 20,
                         children: data.types
                                 ?.map(
-                                  (e) => Padding(
-                                    padding: const EdgeInsets.only(right: 20),
-                                    child: Chip(
-                                      backgroundColor: imageColor
-                                              ?.paletteColors.last.color ??
-                                          Colors.grey,
-                                      label: Text(
-                                        e.type!.name!.capitalize,
-                                        style: textStyle.headline6,
-                                      ),
+                                  (e) => Chip(
+                                    backgroundColor:
+                                        imageColor?.paletteColors.last.color ??
+                                            Colors.grey,
+                                    label: Text(
+                                      e.type!.name!.capitalize,
+                                      style: textStyle.titleMedium,
                                     ),
                                   ),
                                 )
                                 .toList() ??
                             [],
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    _percentageIndicator(
-                      percentage: data.height!,
-                      title: 'Height:',
-                      textStyle: textStyle,
-                      progressColor: mainColor,
-                    ),
-                    const SizedBox(height: 15),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    _percentageIndicator(
-                      percentage: data.height!,
-                      title: 'Weight:',
-                      textStyle: textStyle,
-                      progressColor: mainColor,
-                    ),
-                    const SizedBox(height: 15),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    _percentageIndicator(
-                      percentage: data.height!,
-                      title: 'Based Experience:',
-                      textStyle: textStyle,
-                      progressColor: mainColor,
-                    ),
-                  ],
+                      const SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _detailsTile(
+                            textStyle: textStyle,
+                            title: 'Height',
+                            value: data.height?.toString() ?? '0',
+                          ),
+                          _detailsTile(
+                            textStyle: textStyle,
+                            title: 'Weight',
+                            value: data.weight?.toString() ?? '0',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        'Stats',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Divider(),
+                      const SizedBox(height: 10),
+                      _percentageIndicator(
+                        percentage: data.height!,
+                        title: 'HP',
+                        textStyle: textStyle,
+                        progressColor: mainColor,
+                      ),
+                      const SizedBox(height: 15),
+                      _percentageIndicator(
+                        percentage: data.height!,
+                        title: 'ATK',
+                        textStyle: textStyle,
+                        progressColor: mainColor,
+                      ),
+                      const SizedBox(height: 15),
+                      _percentageIndicator(
+                        percentage: data.height!,
+                        title: 'DEF',
+                        textStyle: textStyle,
+                        progressColor: mainColor,
+                      ),
+                      const SizedBox(height: 15),
+                      _percentageIndicator(
+                        percentage: data.height!,
+                        title: 'SPD',
+                        textStyle: textStyle,
+                        progressColor: mainColor,
+                      ),
+                      const SizedBox(height: 15),
+                      _percentageIndicator(
+                        percentage: data.height!,
+                        title: 'EXP',
+                        textStyle: textStyle,
+                        progressColor: mainColor,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -140,34 +170,54 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
     );
   }
 
+  Widget _detailsTile({
+    required TextTheme textStyle,
+    required String title,
+    required String value,
+  }) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: textStyle.headline5!.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        Text(
+          title,
+          style: textStyle.bodyText1!.copyWith(),
+        ),
+      ],
+    );
+  }
+
   Widget _percentageIndicator({
     required int percentage,
     required String title,
     required TextTheme textStyle,
     required Color progressColor,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              title,
-              style: textStyle.headline6!.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            title,
+            style: textStyle.titleMedium!.copyWith(
+              fontWeight: FontWeight.w500,
             ),
           ),
-          const SizedBox(height: 5),
-          LinearPercentIndicator(
-            width: MediaQuery.of(context).size.width - 40,
+        ),
+        // const Spacer(),
+        Expanded(
+          flex: 5,
+          child: LinearPercentIndicator(
+            // width: MediaQuery.of(context).size.width - 80,
             lineHeight: 25.0,
             percent: percentage / 100,
             center: Text(
               '${percentage / 100}%',
-              style: textStyle.titleMedium!.copyWith(
+              style: textStyle.titleSmall!.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -175,80 +225,8 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
             backgroundColor: Colors.grey.withOpacity(0.8),
             progressColor: progressColor,
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class PokedexSilverAppBar extends StatefulWidget {
-  const PokedexSilverAppBar({
-    super.key,
-    required this.imageColor,
-    required this.pokemon,
-    required this.scrollController,
-  });
-
-  final PaletteGenerator? imageColor;
-  final Pokemon pokemon;
-  final ScrollController scrollController;
-
-  @override
-  State<PokedexSilverAppBar> createState() => _PokedexSilverAppBarState();
-}
-
-class _PokedexSilverAppBarState extends State<PokedexSilverAppBar> {
-  double _titleOpacity = 0;
-  void scrollControllerListener() {
-    final pixel = widget.scrollController.position.pixels;
-
-    if (pixel > (300 - 70)) {
-      _titleOpacity = 1;
-      setState(() {});
-    } else {
-      _titleOpacity = 0;
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.scrollController.addListener(scrollControllerListener);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 300,
-      collapsedHeight: 60,
-      backgroundColor: widget.imageColor?.dominantColor?.color,
-      shape: _titleOpacity == 0
-          ? RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
-            )
-          : null,
-      pinned: true,
-      title: AnimatedOpacity(
-        opacity: _titleOpacity,
-        duration: const Duration(milliseconds: 500),
-        child: Text(
-          widget.pokemon.name!.toUpperCase(),
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
         ),
-      ),
-      flexibleSpace: FlexibleSpaceBar(
-        background: Hero(
-          tag: ValueKey('__pokemon_image_${widget.pokemon.id}__'),
-          child: CachedNetworkImage(
-            imageUrl: widget.pokemon.getImageUrl,
-          ),
-        ),
-      ),
+      ],
     );
   }
 }
