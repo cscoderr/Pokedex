@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,14 +58,6 @@ class HomeCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hslColor = HSLColor.fromColor(
-      paletteGenerator?.dominantColor?.color ?? const Color(0xFFB8DFCA),
-    );
-    final backgroundAsHsl = HSLColor.fromColor(Colors.white);
-    final colorDistance = math.sqrt(
-      math.pow(hslColor.saturation - backgroundAsHsl.saturation, 2.0) +
-          math.pow(hslColor.lightness - backgroundAsHsl.lightness, 2.0),
-    );
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       onTap: onTap,
@@ -97,13 +87,9 @@ class HomeCardView extends StatelessWidget {
               children: [
                 Text(
                   name.capitalize,
-                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: colorDistance < 0.2
-                            ? (paletteGenerator?.lightMutedColor?.color ??
-                                Colors.black)
-                            : (paletteGenerator?.darkMutedColor?.color ??
-                                Colors.black),
+                        color: Colors.black,
                       ),
                 ),
                 Text(

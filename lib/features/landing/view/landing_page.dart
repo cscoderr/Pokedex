@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_instance_creation
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/home/home.dart';
@@ -17,7 +19,7 @@ class _LandingPageState extends State<LandingPage> {
     Future.delayed(const Duration(milliseconds: 1500), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const HomePage(),
+          builder: (context) => HomePage(),
         ),
       );
     });

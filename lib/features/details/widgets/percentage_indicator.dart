@@ -34,10 +34,10 @@ class PercentageIndicator extends StatelessWidget {
             flex: 5,
             child: LinearPercentIndicator(
               lineHeight: 25.0,
-              percent: _getPercentage(percentage),
+              percent: _getPercentage(percentage) / 100,
               animation: true,
               center: Text(
-                '$percentage %',
+                '${_getPercentage(percentage)} %',
                 style: textStyle.titleSmall!.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
@@ -52,7 +52,9 @@ class PercentageIndicator extends StatelessWidget {
     );
   }
 
-  double _getPercentage(int value) {
-    return (value / 100) > 1.0 ? 1.0 : (value / 100);
+  int _getPercentage(
+    int value,
+  ) {
+    return value > 100 ? 100 : value;
   }
 }

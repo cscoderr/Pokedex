@@ -1,18 +1,21 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:palette_generator/palette_generator.dart';
-import 'package:pokedex/core/core.dart';
 
 class PokedexSilverAppBar extends StatefulWidget {
   const PokedexSilverAppBar({
     super.key,
-    required this.imageColor,
-    required this.pokemon,
     required this.scrollController,
+    required this.title,
+    this.backgroundColor,
+    this.flexibleSpace,
+    this.expandedHeight = 300,
+    this.collapsedHeight = 70,
   });
 
-  final PaletteGenerator? imageColor;
-  final Pokemon pokemon;
+  final double expandedHeight;
+  final double collapsedHeight;
+  final Widget title;
+  final Widget? flexibleSpace;
+  final Color? backgroundColor;
   final ScrollController scrollController;
 
   @override
@@ -24,7 +27,7 @@ class _PokedexSilverAppBarState extends State<PokedexSilverAppBar> {
   void scrollControllerListener() {
     final pixel = widget.scrollController.position.pixels;
 
-    if (pixel > (300 - 70)) {
+    if (pixel > (widget.expandedHeight - widget.collapsedHeight)) {
       _titleOpacity = 1;
       setState(() {});
     } else {
@@ -43,9 +46,10 @@ class _PokedexSilverAppBarState extends State<PokedexSilverAppBar> {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 300,
-      collapsedHeight: 60,
-      backgroundColor: widget.imageColor?.dominantColor?.color,
+      expandedHeight: widget.expandedHeight,
+      elevation: 0,
+      collapsedHeight: widget.collapsedHeight,
+      backgroundColor: widget.backgroundColor ?? Colors.white,
       shape: _titleOpacity == 0
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
@@ -55,22 +59,9 @@ class _PokedexSilverAppBarState extends State<PokedexSilverAppBar> {
       title: AnimatedOpacity(
         opacity: _titleOpacity,
         duration: const Duration(milliseconds: 500),
-        child: Text(
-          widget.pokemon.name!.toUpperCase(),
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-        ),
+        child: widget.title,
       ),
-      flexibleSpace: FlexibleSpaceBar(
-        background: Hero(
-          tag: ValueKey('__pokemon_image_${widget.pokemon.id}__'),
-          child: CachedNetworkImage(
-            imageUrl: widget.pokemon.getImageUrl,
-          ),
-        ),
-      ),
+      flexibleSpace: widget.flexibleSpace,
     );
   }
 }

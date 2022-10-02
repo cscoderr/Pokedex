@@ -19,6 +19,18 @@ class PokemonResponse {
                 .toList()
             : null,
       );
+  PokemonResponse copyWith({
+    int? count,
+    String? next,
+    String? previous,
+    List<Pokemon>? results,
+  }) =>
+      PokemonResponse(
+        count: count ?? this.count,
+        next: next ?? this.next,
+        previous: previous ?? this.previous,
+        results: results ?? this.results,
+      );
 
   final int? count;
   final String? next;

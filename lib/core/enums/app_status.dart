@@ -3,4 +3,5 @@ enum AppStatus {
   loading,
   success,
   failure,
+  loadMore,
 }

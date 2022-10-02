@@ -24,6 +24,7 @@ class PokedexApp extends StatelessWidget {
           accentColor: const Color(0xFF13B9FF),
         ),
         fontFamily: GoogleFonts.spaceGrotesk().fontFamily,
+        scaffoldBackgroundColor: Colors.white,
       ),
       localizationsDelegates: const [
         AppLocalizations.delegate,

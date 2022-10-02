@@ -19,7 +19,7 @@ class PokemonRepositoryImpl implements PokedexRepository {
   @override
   Future<PokemonResponse> getPokemonList({int? offset, int? limit}) {
     print('enter');
-    return _pokedexApi.getPokemonList();
+    return _pokedexApi.getPokemonList(offset: offset, limit: limit);
   }
 
   @override

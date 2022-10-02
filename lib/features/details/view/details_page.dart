@@ -1,30 +1,24 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/details/details.dart';
 import 'package:pokedex/features/home/home.dart';
 
-class DetailsPage extends ConsumerStatefulWidget {
-  const DetailsPage({
+class DetailsPage extends ConsumerWidget {
+  DetailsPage({
     super.key,
     required this.pokemon,
   });
 
   final Pokemon pokemon;
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _DetailsPageState();
-}
-
-class _DetailsPageState extends ConsumerState<DetailsPage> {
   final scrollController = ScrollController();
   @override
-  Widget build(BuildContext context) {
-    final imageColor =
-        ref.watch(imageColorProvider(widget.pokemon.getImageUrl)).value;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final imageColor = ref.watch(imageColorProvider(pokemon.getImageUrl)).value;
     final details = ref.watch(
       detailsProvider(
-        widget.pokemon.name!.toLowerCase(),
+        pokemon.name!.toLowerCase(),
       ),
     );
     final textStyle = Theme.of(context).textTheme;
@@ -35,9 +29,24 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
         controller: scrollController,
         slivers: [
           PokedexSilverAppBar(
-            imageColor: imageColor,
-            pokemon: widget.pokemon,
+            backgroundColor: imageColor!.dominantColor!.color,
             scrollController: scrollController,
+            collapsedHeight: 60,
+            title: Text(
+              pokemon.name!.toUpperCase(),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              background: Hero(
+                tag: ValueKey('__pokemon_image_${pokemon.id}__'),
+                child: CachedNetworkImage(
+                  imageUrl: pokemon.getImageUrl,
+                ),
+              ),
+            ),
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
@@ -50,13 +59,13 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
               child: Column(
                 children: [
                   Text(
-                    widget.pokemon.name!.toUpperCase(),
+                    pokemon.name!.toUpperCase(),
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    '#${widget.pokemon.id}',
+                    '#${pokemon.id}',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
@@ -77,8 +86,7 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                                 ?.map(
                                   (e) => Chip(
                                     backgroundColor:
-                                        imageColor?.paletteColors.last.color ??
-                                            Colors.grey,
+                                        imageColor.paletteColors.last.color,
                                     label: Text(
                                       e.type!.name!.capitalize,
                                       style: textStyle.titleMedium,
