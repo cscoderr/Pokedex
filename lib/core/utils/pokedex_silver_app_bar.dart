@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PokedexSilverAppBar extends StatefulWidget {
+class PokedexSilverAppBar extends StatelessWidget {
   const PokedexSilverAppBar({
     super.key,
     required this.scrollController,
@@ -9,6 +9,7 @@ class PokedexSilverAppBar extends StatefulWidget {
     this.flexibleSpace,
     this.expandedHeight = 300,
     this.collapsedHeight = 70,
+    this.titleOpacity = false,
   });
 
   final double expandedHeight;
@@ -17,51 +18,26 @@ class PokedexSilverAppBar extends StatefulWidget {
   final Widget? flexibleSpace;
   final Color? backgroundColor;
   final ScrollController scrollController;
-
-  @override
-  State<PokedexSilverAppBar> createState() => _PokedexSilverAppBarState();
-}
-
-class _PokedexSilverAppBarState extends State<PokedexSilverAppBar> {
-  double _titleOpacity = 0;
-  void scrollControllerListener() {
-    final pixel = widget.scrollController.position.pixels;
-
-    if (pixel > (widget.expandedHeight - widget.collapsedHeight)) {
-      _titleOpacity = 1;
-      setState(() {});
-    } else {
-      _titleOpacity = 0;
-      setState(() {});
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.scrollController.addListener(scrollControllerListener);
-  }
+  final bool titleOpacity;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: widget.expandedHeight,
+      expandedHeight: expandedHeight,
       elevation: 0,
-      collapsedHeight: widget.collapsedHeight,
-      backgroundColor: widget.backgroundColor ?? Colors.white,
-      shape: _titleOpacity == 0
+      collapsedHeight: collapsedHeight,
+      backgroundColor: backgroundColor ?? Colors.white,
+      shape: !titleOpacity
           ? RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             )
           : null,
-      pinned: true,
       title: AnimatedOpacity(
-        opacity: _titleOpacity,
+        opacity: titleOpacity ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 500),
-        child: widget.title,
+        child: title,
       ),
-      flexibleSpace: widget.flexibleSpace,
+      flexibleSpace: flexibleSpace,
     );
   }
 }

@@ -11,3 +11,7 @@ final imageColorProvider =
   );
   return paletteGenerator;
 });
+
+final titleOpacityProvider = StateProvider<bool>((ref) {
+  return false;
+});

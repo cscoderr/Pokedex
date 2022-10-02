@@ -15,6 +15,20 @@ class DetailsPage extends ConsumerWidget {
   final scrollController = ScrollController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final titleOpacity = ref.watch(detailTitleOpacityProvider);
+    scrollController.addListener(() {
+      final pixel = scrollController.position.pixels;
+
+      if (pixel > (300 - 60)) {
+        ref
+            .read(detailTitleOpacityProvider.notifier)
+            .update((state) => state = true);
+      } else {
+        ref
+            .read(detailTitleOpacityProvider.notifier)
+            .update((state) => state = false);
+      }
+    });
     final imageColor = ref.watch(imageColorProvider(pokemon.getImageUrl)).value;
     final details = ref.watch(
       detailsProvider(
@@ -29,6 +43,7 @@ class DetailsPage extends ConsumerWidget {
         controller: scrollController,
         slivers: [
           PokedexSilverAppBar(
+            titleOpacity: titleOpacity,
             backgroundColor: imageColor!.dominantColor!.color,
             scrollController: scrollController,
             collapsedHeight: 60,

@@ -67,7 +67,7 @@ class HomeCardGrid extends StatelessWidget {
         (BuildContext context, int index) {
           final pokemon = data![index];
           return FadeAmination(
-            delay: 50,
+            delay: (index * 1.5) * 10,
             child: HomeCard(
               onTap: () {
                 Navigator.of(context).push(

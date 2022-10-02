@@ -10,11 +10,19 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final titleOpacity = ref.watch(titleOpacityProvider);
     scrollController.addListener(() {
       final bottom = MediaQuery.of(context).size.height * 0.20;
-      if ((scrollController.position.maxScrollExtent -
-              scrollController.position.pixels) <=
-          bottom) {
+      final pixel = scrollController.position.pixels;
+
+      if (pixel > (210 - 70)) {
+        ref.read(titleOpacityProvider.notifier).update((state) => state = true);
+      } else {
+        ref
+            .read(titleOpacityProvider.notifier)
+            .update((state) => state = false);
+      }
+      if ((scrollController.position.maxScrollExtent - pixel) <= bottom) {
         ref.read(homeProvider.notifier).getPokemonList(isInitial: false);
       }
     });
@@ -26,6 +34,7 @@ class HomePage extends ConsumerWidget {
           slivers: [
             PokedexSilverAppBar(
               scrollController: scrollController,
+              titleOpacity: titleOpacity,
               expandedHeight: 210,
               title: const SearchBox(),
               flexibleSpace: _flexibleSpace(context),

@@ -20,6 +20,10 @@ final detailsProvider =
   return response;
 });
 
+final detailTitleOpacityProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 // final homeProvider =
 //     StateNotifierProvider<DetailsProvider, AsyncValue<PokedomDetails>>((ref) {
 //   return DetailsProvider(ref.read);
