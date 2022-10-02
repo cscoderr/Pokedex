@@ -85,18 +85,24 @@ class HomeCardView extends StatelessWidget {
             right: 0,
             child: Column(
               children: [
-                Text(
-                  name.capitalize,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+                Hero(
+                  tag: ValueKey('__pokemon_title_${id}__'),
+                  child: Text(
+                    name.capitalize,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                  ),
                 ),
-                Text(
-                  '#0$id',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: paletteGenerator?.colors.last,
-                      ),
+                Hero(
+                  tag: ValueKey('__pokemon_id_${id}__'),
+                  child: Text(
+                    '#0$id',
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: paletteGenerator?.colors.last,
+                        ),
+                  ),
                 ),
               ],
             ),

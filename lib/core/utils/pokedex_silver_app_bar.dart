@@ -24,7 +24,6 @@ class PokedexSilverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(titleOpacity);
     return SliverAppBar(
       expandedHeight: expandedHeight,
       elevation: 0,

@@ -4,11 +4,11 @@ class FadeAmination extends StatefulWidget {
   const FadeAmination({
     super.key,
     required this.child,
-    this.isEven = false,
-  });
+    this.delay = 0.0,
+  }) : assert(delay >= 0 && delay <= 1.0, 'Delay must be between 0 and 1');
 
   final Widget child;
-  final bool isEven;
+  final double delay;
 
   @override
   State<FadeAmination> createState() => _FadeAminationState();
@@ -19,16 +19,14 @@ class _FadeAminationState extends State<FadeAmination>
   late AnimationController _animationController;
   late Animation<double> scaleAnimation;
   late Animation<double> fadeAnimation;
-  late Animation<Offset> slideAnimation;
   @override
   void initState() {
     super.initState();
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(
-        // milliseconds: widget.delay.toInt(),
-        milliseconds: 500,
+      duration: Duration(
+        milliseconds: (widget.delay * 1000).toInt(),
       ),
     )..forward();
 
@@ -48,19 +46,7 @@ class _FadeAminationState extends State<FadeAmination>
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: const Interval(0.3, 1.0, curve: Curves.easeInOut),
-      ),
-    );
-
-    slideAnimation = Tween<Offset>(
-      // begin: widget.isEven ? const Offset(1.0, 0.0) : Offset.zero,
-      // end: widget.isEven ? Offset.zero : const Offset(0.0, 1.0),
-      begin: widget.isEven ? const Offset(-1.0, 0.0) : const Offset(1.0, 0.0),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: const Interval(0.2, 1.0, curve: Curves.easeInOut),
+        curve: const Interval(0.0, 1.0, curve: Curves.easeInOut),
       ),
     );
   }
@@ -75,12 +61,9 @@ class _FadeAminationState extends State<FadeAmination>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: fadeAnimation,
-      child: SlideTransition(
-        position: slideAnimation,
-        child: ScaleTransition(
-          scale: scaleAnimation,
-          child: widget.child,
-        ),
+      child: ScaleTransition(
+        scale: scaleAnimation,
+        child: widget.child,
       ),
     );
   }

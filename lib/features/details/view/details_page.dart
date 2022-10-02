@@ -44,7 +44,8 @@ class DetailsPage extends ConsumerWidget {
         slivers: [
           PokedexSilverAppBar(
             titleOpacity: titleOpacity,
-            backgroundColor: imageColor!.dominantColor!.color,
+            backgroundColor:
+                imageColor?.dominantColor?.color ?? const Color(0xFFB8DFCA),
             scrollController: scrollController,
             collapsedHeight: 60,
             title: Text(
@@ -73,15 +74,21 @@ class DetailsPage extends ConsumerWidget {
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  Text(
-                    pokemon.name!.toUpperCase(),
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  Hero(
+                    tag: ValueKey('__pokemon_title_${pokemon.id}__'),
+                    child: Text(
+                      pokemon.name!.toUpperCase(),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
-                  Text(
-                    '#${pokemon.id}',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Hero(
+                    tag: ValueKey('__pokemon_id_${pokemon.id}__'),
+                    child: Text(
+                      '#${pokemon.id}',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
                 ],
               ),
@@ -99,12 +106,16 @@ class DetailsPage extends ConsumerWidget {
                         spacing: 20,
                         children: data.types
                                 ?.map(
-                                  (e) => Chip(
-                                    backgroundColor:
-                                        imageColor.paletteColors.last.color,
-                                    label: Text(
-                                      e.type!.name!.capitalize,
-                                      style: textStyle.titleMedium,
+                                  (e) => FadeAmination(
+                                    delay: 0.35,
+                                    child: Chip(
+                                      backgroundColor: imageColor
+                                              ?.paletteColors.last.color ??
+                                          const Color(0xFFB8DFCA),
+                                      label: Text(
+                                        e.type!.name!.capitalize,
+                                        style: textStyle.titleMedium,
+                                      ),
                                     ),
                                   ),
                                 )
@@ -115,15 +126,21 @@ class DetailsPage extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _detailsTile(
-                            textStyle: textStyle,
-                            title: 'Height',
-                            value: data.height?.toString() ?? '0',
+                          FadeAmination(
+                            delay: 0.4,
+                            child: _detailsTile(
+                              textStyle: textStyle,
+                              title: 'Height',
+                              value: data.height?.toString() ?? '0',
+                            ),
                           ),
-                          _detailsTile(
-                            textStyle: textStyle,
-                            title: 'Weight',
-                            value: data.weight?.toString() ?? '0',
+                          FadeAmination(
+                            delay: 0.55,
+                            child: _detailsTile(
+                              textStyle: textStyle,
+                              title: 'Weight',
+                              value: data.weight?.toString() ?? '0',
+                            ),
                           ),
                         ],
                       ),
@@ -138,11 +155,14 @@ class DetailsPage extends ConsumerWidget {
                       const Divider(),
                       const SizedBox(height: 10),
                       for (int i = 0; i < data.stats!.length; i++)
-                        PercentageIndicator(
-                          percentage: data.stats![i].baseStat!,
-                          title: data.stats![i].stat!.name!.subName,
-                          textStyle: textStyle,
-                          progressColor: mainColor,
+                        FadeAmination(
+                          delay: 0.45 + (i * 0.1),
+                          child: PercentageIndicator(
+                            percentage: data.stats![i].baseStat!,
+                            title: data.stats![i].stat!.name!.subName,
+                            textStyle: textStyle,
+                            progressColor: mainColor,
+                          ),
                         ),
                     ],
                   ),
