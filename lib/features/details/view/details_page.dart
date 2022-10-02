@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/details/details.dart';
 import 'package:pokedex/features/home/home.dart';
@@ -115,40 +114,13 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
                       ),
                       const Divider(),
                       const SizedBox(height: 10),
-                      _percentageIndicator(
-                        percentage: data.height!,
-                        title: 'HP',
-                        textStyle: textStyle,
-                        progressColor: mainColor,
-                      ),
-                      const SizedBox(height: 15),
-                      _percentageIndicator(
-                        percentage: data.height!,
-                        title: 'ATK',
-                        textStyle: textStyle,
-                        progressColor: mainColor,
-                      ),
-                      const SizedBox(height: 15),
-                      _percentageIndicator(
-                        percentage: data.height!,
-                        title: 'DEF',
-                        textStyle: textStyle,
-                        progressColor: mainColor,
-                      ),
-                      const SizedBox(height: 15),
-                      _percentageIndicator(
-                        percentage: data.height!,
-                        title: 'SPD',
-                        textStyle: textStyle,
-                        progressColor: mainColor,
-                      ),
-                      const SizedBox(height: 15),
-                      _percentageIndicator(
-                        percentage: data.height!,
-                        title: 'EXP',
-                        textStyle: textStyle,
-                        progressColor: mainColor,
-                      ),
+                      for (int i = 0; i < data.stats!.length; i++)
+                        PercentageIndicator(
+                          percentage: data.stats![i].baseStat!,
+                          title: data.stats![i].stat!.name!.subName,
+                          textStyle: textStyle,
+                          progressColor: mainColor,
+                        ),
                     ],
                   ),
                 ),
@@ -187,44 +159,6 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
         Text(
           title,
           style: textStyle.bodyText1!.copyWith(),
-        ),
-      ],
-    );
-  }
-
-  Widget _percentageIndicator({
-    required int percentage,
-    required String title,
-    required TextTheme textStyle,
-    required Color progressColor,
-  }) {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            title,
-            style: textStyle.titleMedium!.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        // const Spacer(),
-        Expanded(
-          flex: 5,
-          child: LinearPercentIndicator(
-            // width: MediaQuery.of(context).size.width - 80,
-            lineHeight: 25.0,
-            percent: percentage / 100,
-            center: Text(
-              '${percentage / 100}%',
-              style: textStyle.titleSmall!.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            barRadius: const Radius.circular(20),
-            backgroundColor: Colors.grey.withOpacity(0.8),
-            progressColor: progressColor,
-          ),
         ),
       ],
     );
