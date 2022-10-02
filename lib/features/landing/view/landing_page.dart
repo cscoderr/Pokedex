@@ -29,7 +29,6 @@ class _LandingPageState extends State<LandingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FadeAmination(
-        delay: 200,
         child: Center(
           child: Hero(
             tag: const ValueKey('__pokedex__'),

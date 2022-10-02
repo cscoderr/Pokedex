@@ -4,11 +4,11 @@ class FadeAmination extends StatefulWidget {
   const FadeAmination({
     super.key,
     required this.child,
-    required this.delay,
+    this.isEven = false,
   });
 
   final Widget child;
-  final double delay;
+  final bool isEven;
 
   @override
   State<FadeAmination> createState() => _FadeAminationState();
@@ -17,25 +17,50 @@ class FadeAmination extends StatefulWidget {
 class _FadeAminationState extends State<FadeAmination>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
-  late Animation<double> animation;
+  late Animation<double> scaleAnimation;
+  late Animation<double> fadeAnimation;
+  late Animation<Offset> slideAnimation;
   @override
   void initState() {
     super.initState();
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(
-        milliseconds: widget.delay.toInt(),
+      duration: const Duration(
+        // milliseconds: widget.delay.toInt(),
+        milliseconds: 500,
       ),
     )..forward();
 
-    animation = Tween<double>(
+    scaleAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
     ).animate(
       CurvedAnimation(
         parent: _animationController,
-        curve: Curves.easeInOut,
+        curve: const Interval(0.0, 1.0, curve: Curves.easeInOut),
+      ),
+    );
+
+    fadeAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.3, 1.0, curve: Curves.easeInOut),
+      ),
+    );
+
+    slideAnimation = Tween<Offset>(
+      // begin: widget.isEven ? const Offset(1.0, 0.0) : Offset.zero,
+      // end: widget.isEven ? Offset.zero : const Offset(0.0, 1.0),
+      begin: widget.isEven ? const Offset(-1.0, 0.0) : const Offset(1.0, 0.0),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.2, 1.0, curve: Curves.easeInOut),
       ),
     );
   }
@@ -48,16 +73,14 @@ class _FadeAminationState extends State<FadeAmination>
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: animation,
-      child: FadeTransition(
-        opacity: Tween(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(
-            parent: _animationController,
-            curve: Curves.easeIn,
-          ),
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: SlideTransition(
+        position: slideAnimation,
+        child: ScaleTransition(
+          scale: scaleAnimation,
+          child: widget.child,
         ),
-        child: widget.child,
       ),
     );
   }

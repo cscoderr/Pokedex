@@ -10,6 +10,7 @@ class PokedexSilverAppBar extends StatelessWidget {
     this.expandedHeight = 300,
     this.collapsedHeight = 70,
     this.titleOpacity = false,
+    this.pinned = true,
   });
 
   final double expandedHeight;
@@ -19,9 +20,11 @@ class PokedexSilverAppBar extends StatelessWidget {
   final Color? backgroundColor;
   final ScrollController scrollController;
   final bool titleOpacity;
+  final bool pinned;
 
   @override
   Widget build(BuildContext context) {
+    print(titleOpacity);
     return SliverAppBar(
       expandedHeight: expandedHeight,
       elevation: 0,
@@ -32,6 +35,7 @@ class PokedexSilverAppBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
             )
           : null,
+      pinned: pinned,
       title: AnimatedOpacity(
         opacity: titleOpacity ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 500),

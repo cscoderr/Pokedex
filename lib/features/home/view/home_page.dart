@@ -52,6 +52,18 @@ class HomePage extends ConsumerWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => scrollController.animateTo(
+          0,
+          duration: const Duration(microseconds: 500),
+          curve: Curves.easeOut,
+        ),
+        backgroundColor: const Color(0xFFB8DFCA),
+        child: const Icon(
+          Icons.arrow_upward,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 
