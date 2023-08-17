@@ -7,7 +7,17 @@ final pokedexRepositoryProvider = Provider<PokedexRepository>((ref) {
 
 abstract class PokedexRepository {
   Future<PokemonResponse> getPokemonList({int? offset, int? limit});
-  Future<PokemonDetails> getPokemonDetails(String pokemonName);
+  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName);
+}
+
+class PokedexFailure implements Exception {
+  PokedexFailure(this.message);
+  final String message;
+
+  @override
+  String toString() {
+    return message;
+  }
 }
 
 class PokemonRepositoryImpl implements PokedexRepository {
@@ -18,12 +28,24 @@ class PokemonRepositoryImpl implements PokedexRepository {
 
   @override
   Future<PokemonResponse> getPokemonList({int? offset, int? limit}) {
-    print('enter');
-    return _pokedexApi.getPokemonList(offset: offset, limit: limit);
+    try {
+      final response = _pokedexApi.getPokemonList(
+        offset: offset,
+        limit: limit,
+      );
+      return response;
+    } on GetPokemonException catch (e) {
+      throw PokedexFailure(e.toString());
+    }
   }
 
   @override
-  Future<PokemonDetails> getPokemonDetails(String pokemonName) {
-    return _pokedexApi.getPokemonDetails(pokemonName);
+  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName) {
+    try {
+      final response = _pokedexApi.getPokemonDetails(pokemonName);
+      return response;
+    } on GetPokemonDetailsException catch (e) {
+      throw PokedexFailure(e.toString());
+    }
   }
 }

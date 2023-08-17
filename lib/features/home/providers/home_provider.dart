@@ -3,13 +3,13 @@ import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/home/home.dart';
 
 final homeProvider = StateNotifierProvider<HomeProvider, HomeState>((ref) {
-  return HomeProvider(ref.read)..getPokemonList();
+  return HomeProvider(ref)..getPokemonList();
 });
 
 class HomeProvider extends StateNotifier<HomeState> {
-  HomeProvider(this.read) : super(const HomeState());
+  HomeProvider(this.ref) : super(const HomeState());
 
-  final Reader read;
+  final Ref ref;
   int limit = 20;
 
   Future<void> search(String filter) async {
@@ -53,14 +53,15 @@ class HomeProvider extends StateNotifier<HomeState> {
         );
       }
 
-      final response = await read(pokedexRepositoryProvider)
+      final response = await ref
+          .read(pokedexRepositoryProvider)
           .getPokemonList(limit: limit, offset: state.offset);
 
       state = state.copWith(
         status: HomeStatus.success,
         data: isInitial ? response : state.data.append(response),
       );
-    } catch (e) {
+    } on PokedexFailure catch (e) {
       state = state.copWith(
         status: isInitial ? HomeStatus.error : HomeStatus.loadMoreError,
         errorMessage: e.toString(),

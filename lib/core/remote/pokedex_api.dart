@@ -3,9 +3,29 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:pokedex/core/core.dart';
 
+class GetPokemonDetailsException implements Exception {
+  GetPokemonDetailsException(this.message);
+  final String message;
+
+  @override
+  String toString() {
+    return message;
+  }
+}
+
+class GetPokemonException implements Exception {
+  GetPokemonException(this.message);
+  final String message;
+
+  @override
+  String toString() {
+    return message;
+  }
+}
+
 abstract class PokedexApi {
   Future<PokemonResponse> getPokemonList({int? offset, int? limit});
-  Future<PokemonDetails> getPokemonDetails(String pokemonName);
+  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName);
 }
 
 class PokedexApiImpl implements PokedexApi {
@@ -15,32 +35,34 @@ class PokedexApiImpl implements PokedexApi {
   final Dio _dio;
 
   @override
-  Future<PokemonDetails> getPokemonDetails(String pokemonName) async {
+  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName) async {
     try {
       final response = await _dio.get('/pokemon/$pokemonName');
       if (response.statusCode == HttpStatus.ok) {
-        print(response.data['type']);
-        return PokemonDetails.fromJson(response.data as Map<String, dynamic>);
+        return PokemonDetailResponse.fromJson(
+          response.data as Map<String, dynamic>,
+        );
       }
-      throw Exception('error getting pokemon list');
-    } on DioError catch (e) {
-      print(e.message);
-      throw Exception('error getting pokemon list');
+      throw GetPokemonDetailsException(
+        'Unable to get pokemon details, Try again',
+      );
+    } on DioException {
+      throw GetPokemonDetailsException(
+        'Unable to get pokemon details, Try again',
+      );
     }
   }
 
   @override
   Future<PokemonResponse> getPokemonList({int? offset, int? limit}) async {
     try {
-      print(limit);
       final response = await _dio.get('/pokemon?limit=$limit&offset=$offset');
       if (response.statusCode == HttpStatus.ok) {
         return PokemonResponse.fromJson(response.data as Map<String, dynamic>);
       }
-      throw Exception('error getting pokemon list');
-    } on DioError catch (e) {
-      print(e.message);
-      throw Exception('error getting pokemon list');
+      throw GetPokemonException('Unable to get pokemon, Try again');
+    } on DioException {
+      throw GetPokemonException('Unable to get pokemon, Try again');
     }
   }
 }

@@ -1,8 +1,8 @@
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/core/models/pokemon_stats.dart';
 
-class PokemonDetails {
-  PokemonDetails({
+class PokemonDetailResponse {
+  PokemonDetailResponse({
     this.id,
     this.name,
     this.height,
@@ -12,7 +12,8 @@ class PokemonDetails {
     this.stats,
   });
 
-  factory PokemonDetails.fromJson(Map<String, dynamic> json) => PokemonDetails(
+  factory PokemonDetailResponse.fromJson(Map<String, dynamic> json) =>
+      PokemonDetailResponse(
         id: json['id'] as int?,
         name: json['name'] as String?,
         height: json['height'] as int?,
@@ -21,7 +22,8 @@ class PokemonDetails {
         stats: json['stats'] != null
             ? List<PokemonStats>.from(
                 (json['stats'] as List<dynamic>).map(
-                    (e) => PokemonStats.fromJson(e as Map<String, dynamic>)),
+                  (e) => PokemonStats.fromJson(e as Map<String, dynamic>),
+                ),
               )
             : null,
         types: json['types'] != null
