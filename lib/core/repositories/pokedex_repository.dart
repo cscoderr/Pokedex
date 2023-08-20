@@ -27,9 +27,9 @@ class PokemonRepositoryImpl implements PokedexRepository {
   final PokedexApi _pokedexApi;
 
   @override
-  Future<PokemonResponse> getPokemonList({int? offset, int? limit}) {
+  Future<PokemonResponse> getPokemonList({int? offset, int? limit}) async {
     try {
-      final response = _pokedexApi.getPokemonList(
+      final response = await _pokedexApi.getPokemonList(
         offset: offset,
         limit: limit,
       );
@@ -42,11 +42,13 @@ class PokemonRepositoryImpl implements PokedexRepository {
   }
 
   @override
-  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName) {
+  Future<PokemonDetailResponse> getPokemonDetails(String pokemonName) async {
     try {
-      final response = _pokedexApi.getPokemonDetails(pokemonName);
+      final response = await _pokedexApi.getPokemonDetails(pokemonName);
       return response;
     } on GetPokemonDetailsException catch (e) {
+      throw PokedexFailure(e.toString());
+    } catch (e) {
       throw PokedexFailure(e.toString());
     }
   }

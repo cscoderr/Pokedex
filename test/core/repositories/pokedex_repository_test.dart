@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pokedex/core/core.dart';
+import 'package:pokedex/core/models/pokemon_stats.dart';
 
 class MockPokedexRepository extends Mock implements PokedexApi {}
 
@@ -41,6 +42,55 @@ void main() {
 
           expect(
             () => pokedexRepository.getPokemonList(),
+            throwsA(isA<PokedexFailure>()),
+          );
+        },
+      );
+    });
+
+    group('Get Pokemon Details', () {
+      test(
+        'Get Pokemon Details '
+        'call PokedexApi.getPokemonDetails',
+        () {
+          final pokemonType = PokemonType(name: '', url: '');
+          final types = Types(slot: 0, type: pokemonType);
+          final stats = Stat(url: '', name: PokemonStat.attack);
+          final pokemonStats =
+              PokemonStats(baseStat: 0, effort: 0, stat: stats);
+          final response = PokemonDetailResponse(
+            id: 0,
+            name: '',
+            stats: [pokemonStats],
+            height: 0,
+            weight: 0,
+            types: [types],
+            baseExperience: 0,
+          );
+          when(() => pokedexApi.getPokemonDetails('pokemonName'))
+              .thenAnswer((_) async => response);
+
+          final request = pokedexRepository.getPokemonDetails('pokemonName');
+          expect(
+            request,
+            completion(equals(response)),
+          );
+
+          verify(
+            () => pokedexApi.getPokemonDetails('pokemonName'),
+          ).called(1);
+        },
+      );
+
+      test(
+        'Get pokemon Details '
+        ' throws PokedexFailure ',
+        () {
+          when(() => pokedexApi.getPokemonDetails('pokemonName'))
+              .thenThrow(GetPokemonDetailsException);
+
+          expect(
+            () => pokedexRepository.getPokemonDetails('pokemonName'),
             throwsA(isA<PokedexFailure>()),
           );
         },
