@@ -36,6 +36,8 @@ class PokemonRepositoryImpl implements PokedexRepository {
       return response;
     } on GetPokemonException catch (e) {
       throw PokedexFailure(e.toString());
+    } catch (e) {
+      throw PokedexFailure(e.toString());
     }
   }
 
