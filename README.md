@@ -1,6 +1,6 @@
 # Pokedex
 
-![coverage][coverage_badge]
+[![codecov](https://codecov.io/gh/cscoderr/pokedex/branch/master/graph/badge.svg)](https://codecov.io/gh/cscoderr/pokedex)
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
@@ -39,11 +39,18 @@ $ flutter run --flavor production --target lib/main_production.dart
 
 <img src="pokedex.gif" width="30%">
 
-[![codecov](https://codecov.io/gh/cscoderr/pokedex/branch/master/graph/badge.svg)](https://codecov.io/gh/cscoderr/pokedex)
-[flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
+
+
+[flutter_localizations_link](https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html)
+
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
+
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
+
 [license_link]: https://opensource.org/licenses/MIT
+
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
+
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
+
 [very_good_cli_link]: https://github.com/VeryGoodOpenSource/very_good_cli
