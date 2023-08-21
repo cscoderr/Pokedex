@@ -1,42 +1,47 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pokedex/core/core.dart';
-import 'package:pokedex/core/models/pokemon_stats.dart';
+
+import '../../fixtures/fixture.dart';
+
+class MockDioAdapter extends Mock implements HttpClientAdapter {}
 
 class MockDio extends Mock implements Dio {}
 
 void main() {
   late Dio dio;
+  late MockDioAdapter dioAdapter;
   late PokedexApi pokedexApi;
   group('Pokedex Api', () {
     setUp(() {
       dio = MockDio();
+      // dioAdapter = MockDioAdapter();
+      // dio.httpClientAdapter = dioAdapter;
       pokedexApi = PokedexApiImpl(dio: dio);
     });
 
     group('Get pokemon details calls dio api', () {
-      test('description', () {
-        final pokemonType = PokemonType(name: '', url: '');
-        final types = Types(slot: 0, type: pokemonType);
-        final stats = Stat(url: '', name: PokemonStat.attack);
-        final pokemonStats = PokemonStats(baseStat: 0, effort: 0, stat: stats);
-        final response = PokemonDetailResponse(
-          id: 0,
-          name: '',
-          stats: [pokemonStats],
-          height: 0,
-          weight: 0,
-          types: [types],
-          baseExperience: 0,
+      test('description', () async {
+        final rawData = fixture('pokemon_details.json');
+        final data = jsonDecode(rawData) as Map<String, dynamic>;
+        final response = PokemonDetailResponse.fromJson(data);
+        final response2 = PokemonDetailResponse.fromJson(data);
+        final dioResponse = Response(
+          data: jsonDecode(rawData),
+          requestOptions: RequestOptions(),
+          statusCode: 200,
         );
-        final requestOption = RequestOptions(baseUrl: any(named: 'baseUrl'));
-        final dioResponse = Response(requestOptions: requestOption);
         when(() => dio.get(any())).thenAnswer((_) async => dioResponse);
 
+        final actual = await pokedexApi.getPokemonDetails('bulbasaur');
+        print(response == response2);
+
         expect(
-          () => pokedexApi.getPokemonDetails('pokemonName'),
-          completion(equals(response)),
+          actual,
+          response,
         );
       });
     });

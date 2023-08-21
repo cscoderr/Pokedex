@@ -52,7 +52,7 @@ void main() {
       test(
         'Get Pokemon Details '
         'call PokedexApi.getPokemonDetails',
-        () {
+        () async {
           final pokemonType = PokemonType(name: '', url: '');
           final types = Types(slot: 0, type: pokemonType);
           final stats = Stat(url: '', name: PokemonStat.attack);
@@ -70,10 +70,11 @@ void main() {
           when(() => pokedexApi.getPokemonDetails('pokemonName'))
               .thenAnswer((_) async => response);
 
-          final request = pokedexRepository.getPokemonDetails('pokemonName');
+          final request =
+              await pokedexRepository.getPokemonDetails('pokemonName');
           expect(
             request,
-            completion(equals(response)),
+            response,
           );
 
           verify(

@@ -1,0 +1,26 @@
+{
+    "id": 35,
+    "name": "clefairy",
+    "base_experience": 113,
+    "height": 6,
+    "weight": 75,
+    "stats": [
+      {
+        "base_stat": 35,
+        "effort": 0,
+        "stat": {
+          "name": "speed",
+          "url": "https://pokeapi.co/api/v2/stat/6/"
+        }
+      }
+    ],
+    "types": [
+      {
+        "slot": 1,
+        "type": {
+          "name": "fairy",
+          "url": "https://pokeapi.co/api/v2/type/18/"
+        }
+      }
+    ]
+  }

@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/core.dart';
 import 'package:pokedex/core/models/pokemon_stats.dart';
 
+@immutable
 class PokemonDetailResponse {
-  PokemonDetailResponse({
+  const PokemonDetailResponse({
     this.id,
     this.name,
     this.height,
@@ -40,4 +42,27 @@ class PokemonDetailResponse {
   final int? baseExperience;
   final List<Types>? types;
   final List<PokemonStats>? stats;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PokemonDetailResponse &&
+          other.runtimeType == runtimeType &&
+          other.id == id &&
+          other.name == name &&
+          other.height == height &&
+          other.weight == weight &&
+          other.baseExperience == baseExperience &&
+          listEquals(other.types, types) &&
+          listEquals(other.stats, stats);
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      height.hashCode ^
+      weight.hashCode ^
+      baseExperience.hashCode ^
+      types.hashCode ^
+      stats.hashCode;
 }

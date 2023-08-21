@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/core.dart';
 
+@immutable
 class Types {
-  Types({
+  const Types({
     this.type,
     this.slot,
   });
@@ -12,4 +14,15 @@ class Types {
       );
   final int? slot;
   final PokemonType? type;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Types &&
+          other.runtimeType == runtimeType &&
+          other.slot == slot &&
+          other.type == type;
+
+  @override
+  int get hashCode => type.hashCode ^ slot.hashCode;
 }

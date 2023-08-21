@@ -30,8 +30,7 @@ abstract class PokedexApi {
 
 class PokedexApiImpl implements PokedexApi {
   PokedexApiImpl({Dio? dio})
-      : _dio = dio ?? Dio()
-          ..options.baseUrl = AppConstants.baseUrl;
+      : _dio = dio ?? (Dio()..options.baseUrl = AppConstants.baseUrl);
   final Dio _dio;
 
   @override
@@ -46,9 +45,9 @@ class PokedexApiImpl implements PokedexApi {
       throw GetPokemonDetailsException(
         'Unable to get pokemon details, Try again',
       );
-    } on DioException {
+    } on DioException catch (e) {
       throw GetPokemonDetailsException(
-        'Unable to get pokemon details, Try again',
+        e.toString(),
       );
     }
   }

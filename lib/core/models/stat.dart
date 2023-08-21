@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/core.dart';
 
+@immutable
 class Stat {
-  Stat({
+  const Stat({
     this.name,
     this.url,
   });
@@ -13,4 +15,15 @@ class Stat {
 
   final PokemonStat? name;
   final String? url;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Stat &&
+          other.runtimeType == runtimeType &&
+          other.name == name &&
+          other.url == url;
+
+  @override
+  int get hashCode => name.hashCode ^ url.hashCode;
 }
