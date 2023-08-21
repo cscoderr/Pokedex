@@ -86,7 +86,7 @@ class HomePage extends ConsumerWidget {
             child: Text(
               '''Search for Pokémon by name or using the National Pokédex number.''',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyText1,
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           const SizedBox(height: 15),

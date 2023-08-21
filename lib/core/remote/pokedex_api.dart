@@ -36,7 +36,7 @@ class PokedexApiImpl implements PokedexApi {
   @override
   Future<PokemonDetailResponse> getPokemonDetails(String pokemonName) async {
     try {
-      final response = await _dio.get('/pokemon/$pokemonName');
+      final response = await _dio.get<dynamic>('/pokemon/$pokemonName');
       if (response.statusCode == HttpStatus.ok) {
         return PokemonDetailResponse.fromJson(
           response.data as Map<String, dynamic>,
@@ -55,7 +55,8 @@ class PokedexApiImpl implements PokedexApi {
   @override
   Future<PokemonResponse> getPokemonList({int? offset, int? limit}) async {
     try {
-      final response = await _dio.get('/pokemon?limit=$limit&offset=$offset');
+      final response =
+          await _dio.get<dynamic>('/pokemon?limit=$limit&offset=$offset');
       if (response.statusCode == HttpStatus.ok) {
         return PokemonResponse.fromJson(response.data as Map<String, dynamic>);
       }

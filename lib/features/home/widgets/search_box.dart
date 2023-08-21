@@ -7,14 +7,14 @@ class SearchBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final home = ref.watch(homeProvider);
+    // final home = ref.watch(homeProvider);
     return TextField(
       onChanged: (value) => ref.read(homeProvider.notifier).search(value),
       decoration: InputDecoration(
         fillColor: const Color(0xFFE6F0F3),
         filled: true,
         hintText: 'What Pokémon are you looking for?',
-        hintStyle: Theme.of(context).textTheme.bodyText1!.copyWith(
+        hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
               color: Colors.grey,
             ),
         prefixIcon: const Icon(

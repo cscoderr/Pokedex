@@ -22,7 +22,7 @@ class LoadMoreWidget extends ConsumerWidget {
                   const SizedBox(height: 5),
                   Text(
                     'An error occured, Try again',
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ],

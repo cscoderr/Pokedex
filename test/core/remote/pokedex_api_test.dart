@@ -28,16 +28,15 @@ void main() {
         final rawData = fixture('pokemon_details.json');
         final data = jsonDecode(rawData) as Map<String, dynamic>;
         final response = PokemonDetailResponse.fromJson(data);
-        final response2 = PokemonDetailResponse.fromJson(data);
         final dioResponse = Response(
           data: jsonDecode(rawData),
           requestOptions: RequestOptions(),
           statusCode: 200,
         );
-        when(() => dio.get(any())).thenAnswer((_) async => dioResponse);
+        when(() => dio.get<dynamic>(any()))
+            .thenAnswer((_) async => dioResponse);
 
         final actual = await pokedexApi.getPokemonDetails('bulbasaur');
-        print(response == response2);
 
         expect(
           actual,

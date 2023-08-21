@@ -27,7 +27,7 @@ class HomeCardGridView extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     homeState.errorMessage,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
               ),

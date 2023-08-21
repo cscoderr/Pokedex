@@ -53,10 +53,10 @@ void main() {
         'Get Pokemon Details '
         'call PokedexApi.getPokemonDetails',
         () async {
-          final pokemonType = PokemonType(name: '', url: '');
-          final types = Types(slot: 0, type: pokemonType);
-          final stats = Stat(url: '', name: PokemonStat.attack);
-          final pokemonStats =
+          const pokemonType = PokemonType(name: '', url: '');
+          const types = Types(slot: 0, type: pokemonType);
+          const stats = Stat(url: '', name: PokemonStat.attack);
+          const pokemonStats =
               PokemonStats(baseStat: 0, effort: 0, stat: stats);
           final response = PokemonDetailResponse(
             id: 0,
