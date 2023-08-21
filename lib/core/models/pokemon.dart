@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+
+@immutable
 class Pokemon {
   const Pokemon({
     this.name,
@@ -11,6 +14,14 @@ class Pokemon {
 
   final String? name;
   final String? url;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Pokemon && other.name == name && other.url == url;
+
+  @override
+  int get hashCode => name.hashCode ^ url.hashCode;
 }
 
 extension PokemonExtension on Pokemon {

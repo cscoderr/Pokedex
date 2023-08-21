@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:pokedex/core/models/pokemon.dart';
 
+@immutable
 class PokemonResponse {
   const PokemonResponse({
     this.count,
@@ -36,4 +38,18 @@ class PokemonResponse {
   final String? next;
   final String? previous;
   final List<Pokemon>? results;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PokemonResponse &&
+          other.runtimeType == runtimeType &&
+          other.count == count &&
+          other.next == next &&
+          other.previous == previous &&
+          listEquals(other.results, results);
+
+  @override
+  int get hashCode =>
+      count.hashCode ^ next.hashCode ^ previous.hashCode ^ results.hashCode;
 }

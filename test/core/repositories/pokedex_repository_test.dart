@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pokedex/core/core.dart';
-import 'package:pokedex/core/models/pokemon_stats.dart';
+
+import '../../fixtures/fixture.dart';
 
 class MockPokedexRepository extends Mock implements PokedexApi {}
 
@@ -13,6 +16,13 @@ void main() {
       pokedexApi = MockPokedexRepository();
       pokedexRepository = PokemonRepositoryImpl(pokedexApi: pokedexApi);
     });
+
+    group('constructor', () {
+      test('defaults to internal PokedexApi if none is provided', () {
+        expect(PokemonRepositoryImpl.new, isNot(throwsA(isA<Exception>())));
+      });
+    });
+
     group('Get Pokemon List', () {
       test(
           'return PokemonResponse '
@@ -38,7 +48,8 @@ void main() {
         'throws PokedexFailure '
         'if PokedexApi.getPokemonList fails',
         () async {
-          when(pokedexApi.getPokemonList).thenThrow(GetPokemonException);
+          when(pokedexApi.getPokemonList)
+              .thenThrow(GetPokemonException('meesage'));
 
           expect(
             () => pokedexRepository.getPokemonList(),
@@ -53,20 +64,9 @@ void main() {
         'Get Pokemon Details '
         'call PokedexApi.getPokemonDetails',
         () async {
-          const pokemonType = PokemonType(name: '', url: '');
-          const types = Types(slot: 0, type: pokemonType);
-          const stats = Stat(url: '', name: PokemonStat.attack);
-          const pokemonStats =
-              PokemonStats(baseStat: 0, effort: 0, stat: stats);
-          final response = PokemonDetailResponse(
-            id: 0,
-            name: '',
-            stats: [pokemonStats],
-            height: 0,
-            weight: 0,
-            types: [types],
-            baseExperience: 0,
-          );
+          final rawData = fixture('pokemon_details.json');
+          final data = jsonDecode(rawData) as Map<String, dynamic>;
+          final response = PokemonDetailResponse.fromJson(data);
           when(() => pokedexApi.getPokemonDetails('pokemonName'))
               .thenAnswer((_) async => response);
 
@@ -88,7 +88,7 @@ void main() {
         ' throws PokedexFailure ',
         () {
           when(() => pokedexApi.getPokemonDetails('pokemonName'))
-              .thenThrow(GetPokemonDetailsException);
+              .thenThrow(GetPokemonDetailsException('message'));
 
           expect(
             () => pokedexRepository.getPokemonDetails('pokemonName'),
@@ -96,6 +96,58 @@ void main() {
           );
         },
       );
+    });
+
+    group('Get Pokemon List', () {
+      test(
+        'Get Pokemon List '
+        'call PokedexApi.getPokemonList',
+        () async {
+          final rawData = fixture('pokemon_list.json');
+          final data = jsonDecode(rawData) as Map<String, dynamic>;
+          final response = PokemonResponse.fromJson(data);
+          when(
+            () => pokedexApi.getPokemonList(
+              limit: any(named: 'limit'),
+              offset: any(named: 'offset'),
+            ),
+          ).thenAnswer((_) async => response);
+
+          final request = await pokedexRepository.getPokemonList();
+          expect(
+            request,
+            response,
+          );
+
+          verify(
+            () => pokedexApi.getPokemonList(),
+          ).called(1);
+        },
+      );
+
+      test(
+        'Get Pokemon List '
+        ' throws PokedexFailure ',
+        () {
+          when(
+            () => pokedexApi.getPokemonList(
+              limit: any(named: 'limit'),
+              offset: any(named: 'offset'),
+            ),
+          ).thenThrow(GetPokemonException('messade'));
+
+          expect(
+            pokedexRepository.getPokemonList(),
+            throwsA(isA<PokedexFailure>()),
+          );
+        },
+      );
+    });
+
+    group('Pokedex Repository Failure', () {
+      test('PokedexFailure', () {
+        expect(PokedexFailure('error').toString(), 'error');
+      });
     });
   });
 }

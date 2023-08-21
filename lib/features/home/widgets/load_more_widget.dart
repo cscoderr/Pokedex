@@ -11,7 +11,6 @@ class LoadMoreWidget extends ConsumerWidget {
       child: Consumer(
         builder: (context, ref, child) {
           final state = ref.watch(homeProvider);
-          print(state.status);
           if (state.status == HomeStatus.loadMoreError) {
             return Center(
               child: Column(

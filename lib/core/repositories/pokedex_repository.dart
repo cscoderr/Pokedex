@@ -36,8 +36,6 @@ class PokemonRepositoryImpl implements PokedexRepository {
       return response;
     } on GetPokemonException catch (e) {
       throw PokedexFailure(e.toString());
-    } catch (e) {
-      throw PokedexFailure(e.toString());
     }
   }
 
@@ -47,8 +45,6 @@ class PokemonRepositoryImpl implements PokedexRepository {
       final response = await _pokedexApi.getPokemonDetails(pokemonName);
       return response;
     } on GetPokemonDetailsException catch (e) {
-      throw PokedexFailure(e.toString());
-    } catch (e) {
       throw PokedexFailure(e.toString());
     }
   }
