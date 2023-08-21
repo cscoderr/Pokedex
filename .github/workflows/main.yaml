@@ -2,12 +2,34 @@ name: pokedex
 
 on: [pull_request, push]
 
-jobs:
-  semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
+# jobs:
+#   semantic-pull-request:
+#     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
-  build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      flutter_channel: stable
-      flutter_version: 3.13.0
+#   build:
+#     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+#     with:
+#       flutter_channel: stable
+#       flutter_version: 3.13.0
+
+jobs:
+  default_run:
+    name: Format, Analyze and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: ${{ env.FLUTTER_CHANNEL }}
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: flutter doctor
+      - run: flutter pub get
+      - run: dart format --set-exit-if-changed -l 120 lib
+      - run: flutter pub run build_runner build --enable-experiment=records,patterns,sealed-class
+      - run: flutter analyze lib
+      - run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
+
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          fail_ci_if_error: true

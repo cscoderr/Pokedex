@@ -39,7 +39,7 @@ $ flutter run --flavor production --target lib/main_production.dart
 
 <img src="pokedex.gif" width="30%">
 
-[coverage_badge]: coverage_badge.svg
+[![codecov](https://codecov.io/gh/cscoderr/pokedex/branch/master/graph/badge.svg)](https://codecov.io/gh/cscoderr/pokedex)
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
