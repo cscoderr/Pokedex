@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.os }}-flutter-install-cache-${{ env.FLUTTER_VERSION }}
