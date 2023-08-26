@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokedex/core/core.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeCardShimmer extends StatelessWidget {
@@ -6,14 +7,13 @@ class HomeCardShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = MediaQuery.of(context).size.width > 600 ? 4 : 2;
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: GridView.builder(
         padding: EdgeInsets.zero,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
+          crossAxisCount: ScreenSize.crossAxisCount(context),
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
           childAspectRatio: 0.6,

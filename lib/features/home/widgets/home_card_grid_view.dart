@@ -54,11 +54,10 @@ class HomeCardGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final crossAxisCount = MediaQuery.of(context).size.width > 600 ? 4 : 2;
     return SliverGrid(
       key: ValueKey('__list_${data}__'),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
+        crossAxisCount: ScreenSize.crossAxisCount(context),
         mainAxisSpacing: 20,
         crossAxisSpacing: 20,
         childAspectRatio: 0.65,
