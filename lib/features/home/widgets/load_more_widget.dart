@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pokedex/core/core.dart';
 import 'package:pokedex/features/home/home.dart';
 
 class LoadMoreWidget extends ConsumerWidget {
@@ -32,9 +33,7 @@ class LoadMoreWidget extends ConsumerWidget {
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).padding.bottom,
               ),
-              child: const Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+              child: const PokdexLoader(),
             );
           }
           return const SizedBox.shrink();

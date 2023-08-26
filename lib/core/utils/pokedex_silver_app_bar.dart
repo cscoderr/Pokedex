@@ -30,8 +30,8 @@ class PokedexSilverAppBar extends StatelessWidget {
       collapsedHeight: collapsedHeight,
       backgroundColor: backgroundColor ?? Colors.white,
       shape: !titleOpacity
-          ? RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+          ? const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
             )
           : null,
       pinned: pinned,

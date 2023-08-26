@@ -11,34 +11,26 @@ class DetailsTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: EdgeInsets.fromLTRB(
-        0,
-        15,
-        0,
-        MediaQuery.of(context).padding.bottom - 20,
-      ),
-      sliver: SliverToBoxAdapter(
-        child: Column(
-          children: [
-            Hero(
-              tag: ValueKey('__pokemon_title_${pokemon.id}__'),
-              child: Text(
-                pokemon.name!.toUpperCase(),
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          Hero(
+            tag: ValueKey('__pokemon_title_${pokemon.id}__'),
+            child: Text(
+              pokemon.name!.toUpperCase(),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-            Hero(
-              tag: ValueKey('__pokemon_id_${pokemon.id}__'),
-              child: Text(
-                '#${pokemon.id}',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+          ),
+          Hero(
+            tag: ValueKey('__pokemon_id_${pokemon.id}__'),
+            child: Text(
+              '#${pokemon.id}',
+              style: Theme.of(context).textTheme.titleMedium,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

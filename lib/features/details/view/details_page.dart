@@ -56,7 +56,17 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
             pokemon: widget.pokemon,
             scrollController: _scrollController,
           ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 20,
+            ),
+          ),
           DetailsTitle(pokemon: widget.pokemon),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 15,
+            ),
+          ),
           details.when(
             data: (data) {
               return DetailsPageView(
@@ -71,9 +81,7 @@ class _DetailsPageState extends ConsumerState<DetailsPage> {
               ),
             ),
             loading: () => const SliverToBoxAdapter(
-              child: Center(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+              child: PokdexLoader(),
             ),
           ),
         ],
